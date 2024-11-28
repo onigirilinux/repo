@@ -1,5 +1,13 @@
 name: Update Repository
 
+# Configurazione permessi a livello di workflow
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  packages: write
+  pull-requests: write
+
 on:
   push:
     branches: [ main ]
@@ -45,6 +53,12 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: repo/docs/*.pkg.tar.zst
+        name: "Repository Update ${{ github.sha }}"
+        tag_name: "repo-${{ github.sha }}"
+        body_path: repo/docs/release_notes.md
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
         name: "Repository Update ${{ github.sha }}"
         tag_name: "repo-${{ github.sha }}"
         body_path: repo/docs/release_notes.md
