@@ -1,0 +1,45 @@
+name: Update Repository
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'packages/**'
+  workflow_dispatch:
+
+jobs:
+  update-repo:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:base-devel
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install dependencies
+      run: |
+        pacman -Syu --noconfirm
+        pacman -S --noconfirm git base-devel
+    
+    - name: Build packages
+      run: |
+        cd repo
+        chmod +x build_repo.sh update_repo.sh
+        ./update_repo.sh
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./repo/docs
+        publish_branch: gh-pages
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: repo/docs/*.pkg.tar.zst
+        name: "Repository Update ${{ github.sha }}"
+        tag_name: "repo-${{ github.sha }}"
+        body_path: repo/docs/release_notes.md
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
