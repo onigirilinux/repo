@@ -15,15 +15,22 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: repo
     
     - name: Install dependencies
       run: |
         pacman -Syu --noconfirm
         pacman -S --noconfirm git base-devel
     
-    - name: Build packages
+    - name: Setup repository structure
       run: |
-        cd repo
+        mkdir -p repo/docs/x86_64
+        mkdir -p repo/packages
+    
+    - name: Build packages
+      working-directory: repo
+      run: |
         chmod +x build_repo.sh update_repo.sh
         ./update_repo.sh
     
