@@ -1,0 +1,69 @@
+pkgname=onigiri-calamares
+pkgver=3.3.0
+pkgrel=1
+pkgdesc="Distribution-independent installer framework for OnigiriLinux"
+arch=('x86_64')
+url="https://github.com/onigirilinux/onigirilinux"
+license=('GPL')
+depends=('qt5-svg' 'qt5-webengine' 'yaml-cpp' 'networkmanager' 'upower' 'kcoreaddons' 'kconfig' 'ki18n' 'kservice' 'kwidgetsaddons' 'kpmcore' 'boost-libs' 'libpwquality' 'squashfs-tools' 'plasma-framework' 'qt5-xmlpatterns' 'python')
+makedepends=('extra-cmake-modules' 'qt5-tools' 'qt5-translations' 'git' 'boost' 'kparts' 'python')
+provides=('calamares')
+conflicts=('calamares')
+source=("https://github.com/calamares/calamares/releases/download/v${pkgver}/calamares-${pkgver}.tar.gz"
+        "settings.conf"
+        "onigirilinux.conf"
+        "welcome.conf"
+        "packages.conf"
+        "users.conf"
+        "partition.conf"
+        "mount.conf"
+        "unpackfs.conf"
+        "bootloader.conf")
+sha256sums=('SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP')
+
+prepare() {
+    cd "${srcdir}/calamares-${pkgver}"
+    # Patch se necessario
+}
+
+build() {
+    cd "${srcdir}/calamares-${pkgver}"
+
+    mkdir -p build
+    cd build
+    
+    cmake .. \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -DWITH_PYTHONQT=OFF \
+        -DWITH_KF5=ON \
+        -DWITH_QT5=ON
+
+    make
+}
+
+package() {
+    cd "${srcdir}/calamares-${pkgver}/build"
+    make DESTDIR="${pkgdir}" install
+
+    # Install OnigiriLinux Calamares configs
+    install -Dm644 "${srcdir}/settings.conf" "${pkgdir}/etc/calamares/settings.conf"
+    install -Dm644 "${srcdir}/onigirilinux.conf" "${pkgdir}/etc/calamares/modules/onigirilinux.conf"
+    install -Dm644 "${srcdir}/welcome.conf" "${pkgdir}/etc/calamares/modules/welcome.conf"
+    install -Dm644 "${srcdir}/packages.conf" "${pkgdir}/etc/calamares/modules/packages.conf"
+    install -Dm644 "${srcdir}/users.conf" "${pkgdir}/etc/calamares/modules/users.conf"
+    install -Dm644 "${srcdir}/partition.conf" "${pkgdir}/etc/calamares/modules/partition.conf"
+    install -Dm644 "${srcdir}/mount.conf" "${pkgdir}/etc/calamares/modules/mount.conf"
+    install -Dm644 "${srcdir}/unpackfs.conf" "${pkgdir}/etc/calamares/modules/unpackfs.conf"
+    install -Dm644 "${srcdir}/bootloader.conf" "${pkgdir}/etc/calamares/modules/bootloader.conf"
+}
