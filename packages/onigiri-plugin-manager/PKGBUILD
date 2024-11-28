@@ -1,0 +1,26 @@
+# Maintainer: OnigiriLinux Team
+pkgname=onigiri-plugin-manager
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="OnigiriLinux Plugin Manager"
+arch=('x86_64')
+url="https://github.com/onigirilinux/onigirilinux"
+license=('GPL')
+depends=('python' 'python-requests')
+makedepends=('python-setuptools')
+source=("$pkgname-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+    cd "$srcdir/$pkgname-$pkgver"
+    
+    # Create directories
+    mkdir -p "$pkgdir/usr/share/onigirilinux/plugin-manager"
+    mkdir -p "$pkgdir/usr/bin"
+    
+    # Install plugin manager
+    install -Dm755 bar "$pkgdir/usr/share/onigirilinux/plugin-manager/"
+    
+    # Create symlink to /usr/bin
+    ln -s "/usr/share/onigirilinux/plugin-manager/bar" "$pkgdir/usr/bin/bar"
+}

@@ -1,0 +1,23 @@
+pkgname=onigiri-update-notifications
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Update notification system for OnigiriLinux"
+arch=('x86_64')
+url="https://github.com/onigirilinux/onigirilinux"
+license=('GPL')
+depends=('python' 'python-gobject' 'libnotify' 'pacman')
+source=("$pkgname-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    python setup.py install --root="${pkgdir}/" --optimize=1
+    
+    # Install systemd service
+    install -Dm644 "${srcdir}/${pkgname}-${pkgver}/onigiri-update-check.service" \
+        "${pkgdir}/usr/lib/systemd/user/onigiri-update-check.service"
+    
+    # Install desktop file for autostart
+    install -Dm644 "${srcdir}/${pkgname}-${pkgver}/onigiri-update-notifications.desktop" \
+        "${pkgdir}/etc/xdg/autostart/onigiri-update-notifications.desktop"
+}

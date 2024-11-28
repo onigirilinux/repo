@@ -1,0 +1,16 @@
+pkgname=ttf-comic-neue
+pkgver=2.51
+pkgrel=1
+pkgdesc="A modern take on Comic Sans"
+arch=('any')
+url="http://comicneue.com/"
+license=('custom:OFL')
+source=("http://comicneue.com/comic-neue-${pkgver}.zip")
+sha256sums=('SKIP')
+
+package() {
+    cd "${srcdir}"
+    install -dm755 "${pkgdir}/usr/share/fonts/TTF"
+    install -m644 OTF/*.otf "${pkgdir}/usr/share/fonts/TTF/"
+    install -Dm644 LICENSE.md "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

@@ -1,0 +1,23 @@
+pkgname=onigiri-lockscreen
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Lock screen customization tool for OnigiriLinux"
+arch=('x86_64')
+url="https://github.com/onigirilinux/onigirilinux"
+license=('GPL')
+depends=('python' 'python-gobject' 'gtk4' 'libadwaita' 'gdm')
+source=("$pkgname-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    python setup.py install --root="${pkgdir}/" --optimize=1
+    
+    # Install desktop file
+    install -Dm644 "${srcdir}/${pkgname}-${pkgver}/onigiri-lockscreen.desktop" \
+        "${pkgdir}/usr/share/applications/onigiri-lockscreen.desktop"
+    
+    # Install GDM config files
+    install -Dm644 "${srcdir}/${pkgname}-${pkgver}/gdm-custom.css" \
+        "${pkgdir}/usr/share/onigirilinux/gdm/custom.css"
+}

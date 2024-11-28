@@ -1,0 +1,30 @@
+# Maintainer: OnigiriLinux Team
+pkgname=onigiri-updater
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="OnigiriLinux Update Manager"
+arch=('x86_64')
+url="https://github.com/onigirilinux/onigirilinux"
+license=('GPL')
+depends=('python' 'python-gobject' 'gtk4' 'libadwaita' 'python-requests')
+makedepends=('python-setuptools')
+source=("$pkgname-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+    cd "$srcdir/$pkgname-$pkgver"
+    
+    # Create directories
+    mkdir -p "$pkgdir/usr/share/onigirilinux/update-manager"
+    mkdir -p "$pkgdir/usr/share/applications"
+    
+    # Install application files
+    install -Dm755 onigiri_updater.py "$pkgdir/usr/share/onigirilinux/update-manager/"
+    install -Dm644 com.onigirilinux.updater.desktop "$pkgdir/usr/share/applications/"
+    
+    # Create launcher script
+    mkdir -p "$pkgdir/usr/bin"
+    echo '#!/bin/bash
+python3 /usr/share/onigirilinux/update-manager/onigiri_updater.py' > "$pkgdir/usr/bin/onigiri-updater"
+    chmod 755 "$pkgdir/usr/bin/onigiri-updater"
+}

@@ -1,0 +1,23 @@
+pkgname=onigiri-navbar
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="3D stage manager with gesture control for OnigiriLinux"
+arch=('x86_64')
+url="https://github.com/onigirilinux/onigirilinux"
+license=('GPL')
+depends=('python' 'python-gobject' 'gtk4' 'libadwaita' 'libinput' 'xorg-server')
+source=("$pkgname-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    python setup.py install --root="${pkgdir}/" --optimize=1
+    
+    # Install desktop file for autostart
+    install -Dm644 "${srcdir}/${pkgname}-${pkgver}/onigiri-navbar.desktop" \
+        "${pkgdir}/etc/xdg/autostart/onigiri-navbar.desktop"
+    
+    # Install gesture configuration
+    install -Dm644 "${srcdir}/${pkgname}-${pkgver}/30-touchpad-gestures.conf" \
+        "${pkgdir}/etc/X11/xorg.conf.d/30-touchpad-gestures.conf"
+}
