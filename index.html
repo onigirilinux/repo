@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnigiriLinux Repository</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OnigiriLinux Repository</h1>
+        
+        <h2>About</h2>
+        <p>This is the official package repository for OnigiriLinux. It contains custom packages and plugins for the OnigiriLinux distribution.</p>
+        
+        <h2>Usage</h2>
+        <p>To use this repository, add the following to your <code>/etc/pacman.conf</code>:</p>
+        <pre><code>[onigirilinux]
+SigLevel = Optional TrustAll
+Server = https://onigirilinux.github.io/repo/$arch</code></pre>
+        
+        <h2>Available Packages</h2>
+        <ul>
+            <li>onigiri-updater - System update manager</li>
+            <li>onigiri-plugin-manager - Plugin management system</li>
+            <li>onigiri-update-notifications - Update notification system</li>
+            <li>onigiri-lockscreen - Lock screen customization</li>
+            <li>onigiri-navbar - Stage Manager with gesture control</li>
+        </ul>
+        
+        <h2>Support</h2>
+        <p>For support, please visit our <a href="https://github.com/onigirilinux/onigirilinux">GitHub repository</a>.</p>
+    </div>
+</body>
+</html>
